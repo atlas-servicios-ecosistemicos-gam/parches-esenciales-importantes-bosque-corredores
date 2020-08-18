@@ -37,15 +37,17 @@ Column {data-width=650}
 ### Chart A
 
 ```{r}
-leaflet() %>%
-  setView(-86, 14, 8) %>%
+newmap <- leaflet() %>%
+  setView(-84, 10, 8) %>%
   addTiles(group = "Base") %>%
   addEsriFeatureLayer(
     url = paste0("https://services9.arcgis.com/RrvMEynxDB8hycVO/arcgis/rest/services/",
-                 "ni_cosecha_agua_obras/FeatureServer"),
+                 "parches_esenciales_importantes_bosque_corredores/FeatureServer/layers?token=i7zM7sm38hFsEQmd56Ahwx7zVaweVjIwC3uysJOyi6yE1QNRsXvTFHfg_83-ZiWvyF_RG12xcSgg0GgJJnrK8pWUsTE4sF2_EoqJPIEsGWdf7s3Y92-IXmJcqTHeoTQEObAhX0wz_O9FJJsKIj5OwMYGDPQ8yy_30J2_GIQvKv_8CokyfH-l8PFxii4K3Iv-T5q-ONBDBXJqZijGAXSvHRaWHjo-SpYv98ThHtkawY_sEnABh0FPF-WY3FzGA-rU"),
     useServiceSymbology = TRUE,
     group = "Overlay"
   )
+
+newmap
 ```
 
 Column {data-width=350}
