@@ -7,7 +7,28 @@ output:
 ---
 
 ```{r setup, include=FALSE}
+#-------------------- Paquetes --------------------
+
 library(flexdashboard)
+library(plotly)
+library(dplyr)
+library(tidyr)
+library(sf)
+library(leaflet)
+library(leaflet.esri)
+library(leaflet.extras)
+
+#---------------------- Datos ---------------------
+
+# Objeto sf de cantones
+# Carga desde el servicio WFS del SNIT
+url_base_wfs_ign_5mil <- "http://geos.snitcr.go.cr/be/IGN_5/wfs?"
+solicitud_wfs_ign_5mil_cantones <-
+  "request=GetFeature&service=WFS&version=2.0.0&typeName=IGN_5:limitecantonal_5k&outputFormat=application/json"
+sf_cantones <-
+ st_read(paste0(url_base_wfs_ign_5mil, solicitud_wfs_ign_5mil_cantones)) %>%
+ st_simplify(dTolerance = 1000) %>%
+ st_transform(4326)
 ```
 
 Column {data-width=650}
@@ -16,7 +37,14 @@ Column {data-width=650}
 ### Chart A
 
 ```{r}
-
+leaflet() %>%
+  addEsriBasemapLayer(esriBasemapLayers$Gray, group = "Base") %>%
+  addEsriFeatureLayer(
+    url = paste0("https://services9.arcgis.com/RrvMEynxDB8hycVO/arcgis/rest/services/",
+                 "ni_cosecha_agua_obras/FeatureServer/0"),
+    useServiceSymbology = FALSE,
+    group = "Overlay"
+  )
 ```
 
 Column {data-width=350}
