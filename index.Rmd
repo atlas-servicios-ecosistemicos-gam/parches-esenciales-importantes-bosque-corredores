@@ -42,7 +42,7 @@ leaflet() %>%
   addEsriBasemapLayer(esriBasemapLayers$Gray, group = "Base") %>%
   addEsriFeatureLayer(
     url = paste0("https://services9.arcgis.com/RrvMEynxDB8hycVO/arcgis/rest/services/",
-                 "ni_cosecha_agua_obras/FeatureServer/0"),
+                 "ni_cosecha_agua_obras/FeatureServer"),
     useServiceSymbology = TRUE,
     group = "Overlay"
   )
