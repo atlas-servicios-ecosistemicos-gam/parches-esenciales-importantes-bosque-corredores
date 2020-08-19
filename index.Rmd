@@ -47,6 +47,7 @@ leaflet() %>%
   addProviderTiles(providers$Esri.WorldImagery, group = "Imágenes de ESRI") %>%
   addEsriFeatureLayer(
     url = url_agfs_parches,
+    color = "#013220",
     group = "Parches"
   ) %>%  
   addLayersControl(
