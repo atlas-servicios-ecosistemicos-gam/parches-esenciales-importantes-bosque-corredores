@@ -3,6 +3,8 @@ title: "Parches esenciales e importantes para grupo funcional de bosque"
 output: 
   flexdashboard::flex_dashboard:
     orientation: columns
+    social: menu
+    source_code: embed
     vertical_layout: fill
 ---
 
@@ -17,18 +19,19 @@ library(sf)
 library(leaflet)
 library(leaflet.esri)
 library(leaflet.extras)
+library(esri2sf)
+
+#----------------------- URL ----------------------
+
+url_agfs_parches <-
+  paste0("https://services9.arcgis.com/RrvMEynxDB8hycVO/ArcGIS/rest/services/",
+         "parches_esenciales_importantes_bosque_corredores/FeatureServer/0?token=umbDHiqWzA0uFDBIez41jSU7u6moRbokgIQwEBLbk6-kJm99mNZw6AFOTVYx7fPBj5SoatGC7oW2Prj97uaa36NmBUJ4U8KUk8qu2PilfsVWinOp-bDtuUCccx1Ge-uNNLUEF7I2N2eXIo8KW1-YgYm9Yy6P_pskbOhcUfFqEIs_RGPO_YDBEh7WBN_mYSReIi-Wbgvtv9VxXJLoQwxEmvfskVLCMPJdt15imyPHxnQfRtdCP0rMgVBYHICh-5iW"
+  )
 
 #---------------------- Datos ---------------------
 
-# Objeto sf de cantones
-# Carga desde el servicio WFS del SNIT
-url_base_wfs_ign_5mil <- "http://geos.snitcr.go.cr/be/IGN_5/wfs?"
-solicitud_wfs_ign_5mil_cantones <-
-  "request=GetFeature&service=WFS&version=2.0.0&typeName=IGN_5:limitecantonal_5k&outputFormat=application/json"
-sf_cantones <-
- st_read(paste0(url_base_wfs_ign_5mil, solicitud_wfs_ign_5mil_cantones)) %>%
- st_simplify(dTolerance = 1000) %>%
- st_transform(4326)
+# Objeto sf de parches (ESTO NO ESTÁ FUNCIONANDO)
+sf_parches = esri2sf(url_agfs_parches)
 ```
 
 Column {data-width=650}
@@ -39,26 +42,40 @@ Column {data-width=650}
 ```{r}
 leaflet() %>%
   setView(-84, 9.95, 11) %>%
-  addTiles(group = "Base") %>%
+  addProviderTiles(providers$OpenStreetMap.Mapnik, group = "OpenStreetMap") %>%
+  addProviderTiles(providers$Stamen, group = "Stamen") %>%
+  addProviderTiles(providers$Esri.WorldImagery, group = "Imágenes de ESRI") %>%
   addEsriFeatureLayer(
-    url = paste0("https://services9.arcgis.com/RrvMEynxDB8hycVO/ArcGIS/rest/services/",
-                 "parches_esenciales_importantes_bosque_corredores/FeatureServer/0?token=umbDHiqWzA0uFDBIez41jSU7u6moRbokgIQwEBLbk6-kJm99mNZw6AFOTVYx7fPBj5SoatGC7oW2Prj97uaa36NmBUJ4U8KUk8qu2PilfsVWinOp-bDtuUCccx1Ge-uNNLUEF7I2N2eXIo8KW1-YgYm9Yy6P_pskbOhcUfFqEIs_RGPO_YDBEh7WBN_mYSReIi-Wbgvtv9VxXJLoQwxEmvfskVLCMPJdt15imyPHxnQfRtdCP0rMgVBYHICh-5iW"),
-    group = "Overlay"
+    url = url_agfs_parches,
+    group = "Parches"
+  ) %>%  
+  addLayersControl(
+    baseGroups = c("OpenStreetMap", "Stamen", "Imágenes de ESRI"),
+    overlayGroups = c("Parches"),
+    options = layersControlOptions(collapsed = TRUE)    
+  ) %>%  
+  addMiniMap(
+    toggleDisplay = TRUE,
+    position = "bottomleft",
+    tiles = providers$OpenStreetMap.Mapnik
+  ) %>%
+  addScaleBar(
+    position = "bottomright",
+    options = scaleBarOptions(imperial = FALSE)
   )
 ```
 
 Column {data-width=350}
 -----------------------------------------------------------------------
 
-### Gráfico 1
-
+### Indicadores
 ```{r}
-
 ```
 
-### Tabla 1
-
+### Gráfico
 ```{r}
-
 ```
 
+### Tabla
+```{r}
+```
