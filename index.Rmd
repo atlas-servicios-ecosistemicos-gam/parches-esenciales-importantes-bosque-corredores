@@ -2,8 +2,9 @@
 title: "Parches esenciales e importantes para grupo funcional de bosque"
 output: 
   flexdashboard::flex_dashboard:
-    orientation: columns
-    vertical_layout: fill
+    storyboard: true
+    social: menu
+    source: embed
 ---
 
 ```{r setup, include=FALSE}
@@ -31,13 +32,7 @@ sf_parches = esri2sf(url_agfs_parches)
 pal <- colorNumeric(c("blue", "green", "red"), sf_parches$d_PC)
 ```
 
-Parches esenciales
-=======================================================================
-
-Column {data-width=650}
------------------------------------------------------------------------
-
-### Mapa
+### Parches esenciales para grupo funcional de bosque
 
 ```{r}
 leaflet(data = sf_parches) %>%
@@ -63,7 +58,7 @@ leaflet(data = sf_parches) %>%
     pal=pal,
     values = ~d_PC, 
     group = "Parches",
-    title = "d_PC"
+    title = "Esencialidad"
   ) %>%  
   addMiniMap(
     toggleDisplay = TRUE,
@@ -76,17 +71,5 @@ leaflet(data = sf_parches) %>%
   )
 ```
 
-Column {data-width=350}
------------------------------------------------------------------------
-
-### Cifras
-```{r}
-```
-
-### Gráfico
-```{r}
-```
-
-### Tabla
-```{r}
-```
+***
+Parches esenciales para grupo funcional de bosque...
