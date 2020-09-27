@@ -23,15 +23,19 @@ library(esri2sf)
 
 #----------------------- URL ----------------------
 
+#url_agfs_parches <-
+#  paste0("https://services9.arcgis.com/RrvMEynxDB8hycVO/ArcGIS/rest/services/",
+#         "parches_esenciales_importantes_bosque_corredores/FeatureServer/0?token=umbDHiqWzA0uFDBIez41jSU7u6moRbokgIQwEBLbk6-kJm9#9mNZw6AFOTVYx7fPBj5SoatGC7oW2Prj97uaa36NmBUJ4U8KUk8qu2PilfsVWinOp-bDtuUCccx1Ge-uNNLUEF7I2N2eXIo8KW1-YgYm9Yy6P_pskbOhcUfFqEIs_RGP#O_YDBEh7WBN_mYSReIi-Wbgvtv9VxXJLoQwxEmvfskVLCMPJdt15imyPHxnQfRtdCP0rMgVBYHICh-5iW"
+#  )
 url_agfs_parches <-
-  paste0("https://services9.arcgis.com/RrvMEynxDB8hycVO/ArcGIS/rest/services/",
-         "parches_esenciales_importantes_bosque_corredores/FeatureServer/0?token=umbDHiqWzA0uFDBIez41jSU7u6moRbokgIQwEBLbk6-kJm99mNZw6AFOTVYx7fPBj5SoatGC7oW2Prj97uaa36NmBUJ4U8KUk8qu2PilfsVWinOp-bDtuUCccx1Ge-uNNLUEF7I2N2eXIo8KW1-YgYm9Yy6P_pskbOhcUfFqEIs_RGPO_YDBEh7WBN_mYSReIi-Wbgvtv9VxXJLoQwxEmvfskVLCMPJdt15imyPHxnQfRtdCP0rMgVBYHICh-5iW"
-  )
+  "https://services9.arcgis.com/RrvMEynxDB8hycVO/arcgis/rest/services/parches_esenciales_importantes_bosque_corredores/FeatureServer/0"
 
 #---------------------- Datos ---------------------
 
-# Objeto sf de parches (ESTO NO ESTÁ FUNCIONANDO)
+# Objeto sf de parches
 sf_parches = esri2sf(url_agfs_parches)
+
+pal <- colorNumeric(c("red", "green", "blue"), sf_parches$d_PC)
 ```
 
 Column {data-width=650}
@@ -40,20 +44,30 @@ Column {data-width=650}
 ### Mapa
 
 ```{r}
-leaflet() %>%
+leaflet(data = sf_parches) %>%
   setView(-84, 9.95, 11) %>%
   addProviderTiles(providers$OpenStreetMap.Mapnik, group = "OpenStreetMap") %>%
   addProviderTiles(providers$Stamen, group = "Stamen") %>%
   addProviderTiles(providers$Esri.WorldImagery, group = "Imágenes de ESRI") %>%
-  addEsriFeatureLayer(
-    url = url_agfs_parches,
-    color = "#013220",
-    group = "Parches"
-  ) %>%  
+  addPolygons(
+    fillOpacity = 0.9,
+    stroke = TRUE,
+    color = ~pal(d_PC),
+    fillColor = ~pal(d_PC),
+    weight = 0.3,
+    smoothFactor = 0.2
+  ) %>%
   addLayersControl(
     baseGroups = c("OpenStreetMap", "Stamen", "Imágenes de ESRI"),
     overlayGroups = c("Parches"),
     options = layersControlOptions(collapsed = TRUE)    
+  ) %>%  
+  addLegend(
+    position = "bottomright",
+    pal=pal,
+    values = ~d_PC, 
+    group = "Parches",
+    title = "d_PC"
   ) %>%  
   addMiniMap(
     toggleDisplay = TRUE,
