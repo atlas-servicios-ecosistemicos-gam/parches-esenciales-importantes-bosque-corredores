@@ -1,5 +1,5 @@
 ---
-title: "Parches esenciales e importantes para grupo funcional de bosque"
+title: "Parches esenciales e importantes en corredores biológicos interurbanos Río Torres y María Aguilar"
 output: 
   flexdashboard::flex_dashboard:
     storyboard: true
@@ -19,23 +19,33 @@ library(esri2sf)
 #----------------------- URL ----------------------
 
 # URL del ArcGIS REST Feature Service
-url_agfs_parches <-
+url_agfs_bosque <-
   "https://services9.arcgis.com/RrvMEynxDB8hycVO/arcgis/rest/services/parches_esenciales_importantes_bosque_corredores/FeatureServer/0"
+
+url_agfs_bosque_bripario <-
+  "https://services9.arcgis.com/RrvMEynxDB8hycVO/arcgis/rest/services/parches_esenciales_importantes_bosque_bripario_corredores/FeatureServer/0"
 
 #---------------------- Datos ---------------------
 
-# Objeto sf de parches
-sf_parches = esri2sf(url_agfs_parches)
+# Objeto sf de bosque
+sf_bosque = esri2sf(url_agfs_bosque)
 
-#---------------- Paleta de colores ---------------
+# Objeto sf de bosque y bosque ribereño
+sf_bosque_bripario = esri2sf(url_agfs_bosque_bripario)
 
-pal <- colorNumeric(c("blue", "green", "red"), sf_parches$d_PC)
+#---------------- Paletas de colores ---------------
+
+pal_bosque_d_PC <- colorNumeric(c("yellow", "red"), sf_bosque$d_PC)
+pal_bosque_IF <- colorNumeric(c("yellow", "red"), sf_bosque$IF_)
+
+pal_bosque_bripario_d_PC <- colorNumeric(c("yellow", "red"), sf_bosque_bripario$d_PC)
+pal_bosque_bripario_IF <- colorNumeric(c("yellow", "red"), sf_bosque_bripario$IF_)
 ```
 
 ### Parches esenciales para grupo funcional de bosque
 
 ```{r}
-leaflet(data = sf_parches) %>%
+leaflet(data = sf_bosque) %>%
   setView(-84, 9.95, 11) %>%
   addProviderTiles(providers$OpenStreetMap.Mapnik, group = "OpenStreetMap") %>%
   addProviderTiles(providers$Stamen, group = "Stamen") %>%
@@ -43,10 +53,11 @@ leaflet(data = sf_parches) %>%
   addPolygons(
     fillOpacity = 0.9,
     stroke = TRUE,
-    color = ~pal(d_PC),
-    fillColor = ~pal(d_PC),
+    color = ~pal_bosque_d_PC(d_PC),
+    fillColor = ~pal_bosque_d_PC(d_PC),
     weight = 0.3,
-    smoothFactor = 0.2
+    smoothFactor = 0.2,
+    group = "Parches"
   ) %>%
   addLayersControl(
     baseGroups = c("OpenStreetMap", "Stamen", "Imágenes de ESRI"),
@@ -55,7 +66,7 @@ leaflet(data = sf_parches) %>%
   ) %>%  
   addLegend(
     position = "bottomright",
-    pal=pal,
+    pal=pal_bosque_d_PC,
     values = ~d_PC, 
     group = "Parches",
     title = "Esencialidad"
@@ -73,3 +84,132 @@ leaflet(data = sf_parches) %>%
 
 ***
 Parches esenciales para grupo funcional de bosque...
+
+### Parches importantes para grupo funcional de bosque
+
+```{r}
+leaflet(data = sf_bosque) %>%
+  setView(-84, 9.95, 11) %>%
+  addProviderTiles(providers$OpenStreetMap.Mapnik, group = "OpenStreetMap") %>%
+  addProviderTiles(providers$Stamen, group = "Stamen") %>%
+  addProviderTiles(providers$Esri.WorldImagery, group = "Imágenes de ESRI") %>%
+  addPolygons(
+    fillOpacity = 0.9,
+    stroke = TRUE,
+    color = ~pal_bosque_IF(IF_),
+    fillColor = ~pal_bosque_IF(IF_),
+    weight = 0.3,
+    smoothFactor = 0.2,
+    group = "Parches"
+  ) %>%
+  addLayersControl(
+    baseGroups = c("OpenStreetMap", "Stamen", "Imágenes de ESRI"),
+    overlayGroups = c("Parches"),
+    options = layersControlOptions(collapsed = TRUE)    
+  ) %>%  
+  addLegend(
+    position = "bottomright",
+    pal=pal_bosque_IF,
+    values = ~IF_, 
+    group = "Parches",
+    title = "Importancia"
+  ) %>%  
+  addMiniMap(
+    toggleDisplay = TRUE,
+    position = "bottomleft",
+    tiles = providers$OpenStreetMap.Mapnik
+  ) %>%
+  addScaleBar(
+    position = "bottomright",
+    options = scaleBarOptions(imperial = FALSE)
+  )
+```
+
+***
+Parches importantes para grupo funcional de bosque...
+
+### Parches esenciales para grupo funcional de bosque y bosque ribereño
+
+```{r}
+leaflet(data = sf_bosque_bripario) %>%
+  setView(-84, 9.95, 11) %>%
+  addProviderTiles(providers$OpenStreetMap.Mapnik, group = "OpenStreetMap") %>%
+  addProviderTiles(providers$Stamen, group = "Stamen") %>%
+  addProviderTiles(providers$Esri.WorldImagery, group = "Imágenes de ESRI") %>%
+  addPolygons(
+    fillOpacity = 0.9,
+    stroke = TRUE,
+    color = ~pal_bosque_bripario_d_PC(d_PC),
+    fillColor = ~pal_bosque_bripario_d_PC(d_PC),
+    weight = 0.3,
+    smoothFactor = 0.2,
+    group = "Parches"
+  ) %>%
+  addLayersControl(
+    baseGroups = c("OpenStreetMap", "Stamen", "Imágenes de ESRI"),
+    overlayGroups = c("Parches"),
+    options = layersControlOptions(collapsed = TRUE)    
+  ) %>%  
+  addLegend(
+    position = "bottomright",
+    pal=pal_bosque_bripario_d_PC,
+    values = ~d_PC, 
+    group = "Parches",
+    title = "Esencialidad"
+  ) %>%  
+  addMiniMap(
+    toggleDisplay = TRUE,
+    position = "bottomleft",
+    tiles = providers$OpenStreetMap.Mapnik
+  ) %>%
+  addScaleBar(
+    position = "bottomright",
+    options = scaleBarOptions(imperial = FALSE)
+  )
+```
+
+***
+Parches esenciales para grupo funcional de bosque y bosque ribereño...
+
+### Parches importantes para grupo funcional de bosque y bosque ribereño
+
+```{r}
+leaflet(data = sf_bosque_bripario) %>%
+  setView(-84, 9.95, 11) %>%
+  addProviderTiles(providers$OpenStreetMap.Mapnik, group = "OpenStreetMap") %>%
+  addProviderTiles(providers$Stamen, group = "Stamen") %>%
+  addProviderTiles(providers$Esri.WorldImagery, group = "Imágenes de ESRI") %>%
+  addPolygons(
+    fillOpacity = 0.9,
+    stroke = TRUE,
+    color = ~pal_bosque_bripario_IF(IF_),
+    fillColor = ~pal_bosque_bripario_IF(IF_),
+    weight = 0.3,
+    smoothFactor = 0.2,
+    group = "Parches"
+  ) %>%
+  addLayersControl(
+    baseGroups = c("OpenStreetMap", "Stamen", "Imágenes de ESRI"),
+    overlayGroups = c("Parches"),
+    options = layersControlOptions(collapsed = TRUE)    
+  ) %>%  
+  addLegend(
+    position = "bottomright",
+    pal=pal_bosque_bripario_IF,
+    values = ~IF_, 
+    group = "Parches",
+    title = "Importancia"
+  ) %>%  
+  addMiniMap(
+    toggleDisplay = TRUE,
+    position = "bottomleft",
+    tiles = providers$OpenStreetMap.Mapnik
+  ) %>%
+  addScaleBar(
+    position = "bottomright",
+    options = scaleBarOptions(imperial = FALSE)
+  )
+```
+
+***
+Parches importantes para grupo funcional de bosque y bosque ribereño...
