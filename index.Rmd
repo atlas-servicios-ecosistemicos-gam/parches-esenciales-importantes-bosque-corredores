@@ -20,10 +20,10 @@ library(esri2sf)
 
 # URL del ArcGIS REST Feature Service
 url_agfs_bosque <-
-  "https://services9.arcgis.com/RrvMEynxDB8hycVO/arcgis/rest/services/parches_esenciales_importantes_bosque_corredores/FeatureServer/0"
+  "https://services9.arcgis.com/RrvMEynxDB8hycVO/arcgis/rest/services/gam_parches_esenciales_importantes_bosque_corredores/FeatureServer/0"
 
 url_agfs_bosque_bripario <-
-  "https://services9.arcgis.com/RrvMEynxDB8hycVO/arcgis/rest/services/parches_esenciales_importantes_bosque_bripario_corredores/FeatureServer/0"
+  "https://services9.arcgis.com/RrvMEynxDB8hycVO/arcgis/rest/services/gam_parches_esenciales_importantes_bosque_bripario_corredores/FeatureServer/0"
 
 #---------------------- Datos ---------------------
 
@@ -83,7 +83,8 @@ leaflet(data = sf_bosque) %>%
 ```
 
 ***
-Parches esenciales para grupo funcional de bosque...
+Parches esenciales para grupo funcional de bosque...  
+[Dirección del geoservicio](https://services9.arcgis.com/RrvMEynxDB8hycVO/arcgis/rest/services/gam_parches_esenciales_importantes_bosque_corredores/FeatureServer/0)
 
 ### Parches importantes para grupo funcional de bosque
 
@@ -126,7 +127,8 @@ leaflet(data = sf_bosque) %>%
 ```
 
 ***
-Parches importantes para grupo funcional de bosque...
+Parches importantes para grupo funcional de bosque...  
+[Dirección del geoservicio](https://services9.arcgis.com/RrvMEynxDB8hycVO/arcgis/rest/services/gam_parches_esenciales_importantes_bosque_corredores/FeatureServer/0)
 
 ### Parches esenciales para grupo funcional de bosque y bosque ribereño
 
@@ -169,7 +171,8 @@ leaflet(data = sf_bosque_bripario) %>%
 ```
 
 ***
-Parches esenciales para grupo funcional de bosque y bosque ribereño...
+Parches esenciales para grupo funcional de bosque y bosque ribereño...  
+[Dirección del geoservicio](https://services9.arcgis.com/RrvMEynxDB8hycVO/arcgis/rest/services/gam_parches_esenciales_importantes_bosque_bripario_corredores/FeatureServer/0)
 
 ### Parches importantes para grupo funcional de bosque y bosque ribereño
 
@@ -212,4 +215,5 @@ leaflet(data = sf_bosque_bripario) %>%
 ```
 
 ***
-Parches importantes para grupo funcional de bosque y bosque ribereño...
+Parches importantes para grupo funcional de bosque y bosque ribereño...  
+[Dirección del geoservicio](https://services9.arcgis.com/RrvMEynxDB8hycVO/arcgis/rest/services/gam_parches_esenciales_importantes_bosque_bripario_corredores/FeatureServer/0)
