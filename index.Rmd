@@ -25,6 +25,9 @@ url_agfs_bosque <-
 url_agfs_bosque_bripario <-
   "https://services9.arcgis.com/RrvMEynxDB8hycVO/arcgis/rest/services/gam_parches_esenciales_importantes_bosque_bripario_corredores/FeatureServer/0"
 
+url_agfs_bripario <-
+  "https://services9.arcgis.com/RrvMEynxDB8hycVO/arcgis/rest/services/gam_parches_esenciales_importantes_bripario_corredores/FeatureServer/0"
+
 #---------------------- Datos ---------------------
 
 # Objeto sf de bosque
@@ -33,13 +36,23 @@ sf_bosque = esri2sf(url_agfs_bosque)
 # Objeto sf de bosque y bosque ribereño
 sf_bosque_bripario = esri2sf(url_agfs_bosque_bripario)
 
+# Objeto sf de bosque ribereño
+sf_bripario = esri2sf(url_agfs_bripario)
+
 #---------------- Paletas de colores ---------------
 
+# Paleta para bosque
 pal_bosque_d_PC <- colorNumeric(c("yellow", "red"), sf_bosque$d_PC)
 pal_bosque_IF <- colorNumeric(c("yellow", "red"), sf_bosque$IF_)
 
+# Paleta para bosque y bosque ribereño
 pal_bosque_bripario_d_PC <- colorNumeric(c("yellow", "red"), sf_bosque_bripario$d_PC)
 pal_bosque_bripario_IF <- colorNumeric(c("yellow", "red"), sf_bosque_bripario$IF_)
+
+# Paleta para bosque ribereño
+pal_bripario_d_PC <- colorNumeric(c("yellow", "red"), sf_bripario$d_PC)
+pal_bripario_IF <- colorNumeric(c("yellow", "red"), sf_bripario$IF_)
+
 ```
 
 ### Parches esenciales para grupo funcional de bosque
@@ -217,3 +230,91 @@ leaflet(data = sf_bosque_bripario) %>%
 ***
 Parches importantes para grupo funcional de bosque y bosque ribereño...  
 [Dirección del geoservicio](https://services9.arcgis.com/RrvMEynxDB8hycVO/arcgis/rest/services/gam_parches_esenciales_importantes_bosque_bripario_corredores/FeatureServer/0)
+
+### Parches esenciales para grupo funcional de bosque ribereño
+
+```{r}
+leaflet(data = sf_bripario) %>%
+  setView(-84, 9.95, 11) %>%
+  addProviderTiles(providers$OpenStreetMap.Mapnik, group = "OpenStreetMap") %>%
+  addProviderTiles(providers$Stamen, group = "Stamen") %>%
+  addProviderTiles(providers$Esri.WorldImagery, group = "Imágenes de ESRI") %>%
+  addPolygons(
+    fillOpacity = 0.9,
+    stroke = TRUE,
+    color = ~pal_bripario_d_PC(d_PC),
+    fillColor = ~pal_bripario_d_PC(d_PC),
+    weight = 0.3,
+    smoothFactor = 0.2,
+    group = "Parches"
+  ) %>%
+  addLayersControl(
+    baseGroups = c("OpenStreetMap", "Stamen", "Imágenes de ESRI"),
+    overlayGroups = c("Parches"),
+    options = layersControlOptions(collapsed = TRUE)    
+  ) %>%  
+  addLegend(
+    position = "bottomright",
+    pal=pal_bripario_d_PC,
+    values = ~d_PC, 
+    group = "Parches",
+    title = "Esencialidad"
+  ) %>%  
+  addMiniMap(
+    toggleDisplay = TRUE,
+    position = "bottomleft",
+    tiles = providers$OpenStreetMap.Mapnik
+  ) %>%
+  addScaleBar(
+    position = "bottomright",
+    options = scaleBarOptions(imperial = FALSE)
+  )
+```
+
+***
+Parches esenciales para grupo funcional de bosque ribereño...  
+[Dirección del geoservicio](https://services9.arcgis.com/RrvMEynxDB8hycVO/arcgis/rest/services/gam_parches_esenciales_importantes_bripario_corredores/FeatureServer/0)
+
+### Parches importantes para grupo funcional de bosque ribereño
+
+```{r}
+leaflet(data = sf_bripario) %>%
+  setView(-84, 9.95, 11) %>%
+  addProviderTiles(providers$OpenStreetMap.Mapnik, group = "OpenStreetMap") %>%
+  addProviderTiles(providers$Stamen, group = "Stamen") %>%
+  addProviderTiles(providers$Esri.WorldImagery, group = "Imágenes de ESRI") %>%
+  addPolygons(
+    fillOpacity = 0.9,
+    stroke = TRUE,
+    color = ~pal_bripario_IF(IF_),
+    fillColor = ~pal_bripario_IF(IF_),
+    weight = 0.3,
+    smoothFactor = 0.2,
+    group = "Parches"
+  ) %>%
+  addLayersControl(
+    baseGroups = c("OpenStreetMap", "Stamen", "Imágenes de ESRI"),
+    overlayGroups = c("Parches"),
+    options = layersControlOptions(collapsed = TRUE)    
+  ) %>%  
+  addLegend(
+    position = "bottomright",
+    pal=pal_bripario_IF,
+    values = ~IF_, 
+    group = "Parches",
+    title = "Importancia"
+  ) %>%  
+  addMiniMap(
+    toggleDisplay = TRUE,
+    position = "bottomleft",
+    tiles = providers$OpenStreetMap.Mapnik
+  ) %>%
+  addScaleBar(
+    position = "bottomright",
+    options = scaleBarOptions(imperial = FALSE)
+  )
+```
+
+***
+Parches importantes para grupo funcional de bosque ribereño...  
+[Dirección del geoservicio](https://services9.arcgis.com/RrvMEynxDB8hycVO/arcgis/rest/services/gam_parches_esenciales_importantes_bripario_corredores/FeatureServer/0)
